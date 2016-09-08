@@ -3,7 +3,9 @@
   "description": "Element for product library product capturing on the Ordercloud platform",
   "main": "oc-product-library-input.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0"
+    "polymer": "Polymer/polymer#^1.4.0",
+    "paper-input": "PolymerElements/paper-input#^1.1.15",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#^1.1.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

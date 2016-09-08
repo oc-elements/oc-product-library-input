@@ -1,4 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-input/paper-textarea.html">
+<link rel="import" href="../paper-toggle-button/paper-toggle-button.html">
 
 <!--
 `oc-product-library-input`
@@ -13,8 +16,31 @@ Element for product library product capturing on the Ordercloud platform
       :host {
         display: block;
       }
+
+      .toggleItem {
+        max-width:200px;
+        margin: 10px 0px 0px 0px ;
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+      }
+
     </style>
-    <h2>Hello [[prop1]]</h2>
+
+    <paper-input id="txtName" label="Product Name" required auto-validate error-message="Please provide a name"></paper-input>
+    <paper-input id="txtSku" label="SKU"></paper-input>
+    <paper-input id="txtShortDescription" label="Short Description" required auto-validate error-message="Please provide a short description"></paper-input>
+    <paper-textarea id="txtFullDescription" label="Full Description" required auto-validate error-message="Please provide a full description"></paper-textarea>
+    <paper-textarea id="txtAdditionalInfo" label="Additional Info"></paper-textarea>
+    <paper-input id="txtPrice" label="Price" required auto-validate error-message="Please provide a price"></paper-input>
+    <div class="toggleItem">
+      <iron-label>Product is [[ _productEnabled ]]</iron-label>
+      <paper-toggle-button id="tglProductStatus" on-change="_enabledChanged"></paper-toggle-button>
+    </div>
+    <div class="toggleItem">
+      <iron-label>[[ _availableOnline ]] online</iron-label>
+      <paper-toggle-button id="tglSalesChannel" on-change="_onlineAvailabilityChanged"></paper-toggle-button>
+    </div>
+
   </template>
 
   <script>
@@ -22,12 +48,75 @@ Element for product library product capturing on the Ordercloud platform
 
       is: 'oc-product-library-input',
 
-      properties: {
-        prop1: {
-          type: String,
-          value: 'oc-product-library-input',
-        },
+      ready: function() {
+        this._productEnabled = 'disabled';
+        this._inStock = 'Out of';
+        this._availableOnline = 'Unavailable';
       },
+
+      clear: function() {
+        this.$.txtName.autoValidate = false;
+        this.$.txtName.value = '';
+        this.$.txtName.autoValidate = true;
+
+        this.$.txtSku.value = '';
+
+        this.$.txtShortDescription.autoValidate = false;
+        this.$.txtShortDescription.value = '';
+        this.$.txtShortDescription.autoValidate = true;
+
+        this.$.txtFullDescription.autoValidate = false;
+        this.$.txtFullDescription.value = '';
+        this.$.txtFullDescription.autoValidate = true;
+
+        this.$.txtAdditionalInfo.value = '';
+
+        this.$.txtPrice.autoValidate = false;
+        this.$.txtPrice.value = '';
+        this.$.txtPrice.autoValidate = true;
+
+        this.$.tglProductStatus.checked = false;
+        this.$.tglSalesChannel.checked = false;
+      },
+
+      getNewProductDetails: function() {
+        if (this._valid()) {
+          return {
+            name: this.$.txtName.value,
+            shortDescription: this.$.txtShortDescription.value,
+            description: this.$.txtFullDescription.value,
+            price: this.$.txtPrice.value,
+            sku: this.$.txtSku.value,
+            enabled: this.$.tglProductStatus.checked,
+            availableOnline: this.$.tglSalesChannel.checked,
+            additionalInfo: this.$.txtAdditionalInfo.value,
+            attributes: [],
+            optionSets: [],
+            extraSets: [],
+            tags: [],
+            productType: null
+          };
+        } else {
+          return null;
+        }
+      },
+
+      _valid: function() {
+        return !(this.$.txtName.invalid ||
+        this.$.txtSku.invalid ||
+        this.$.txtShortDescription.invalid ||
+        this.$.txtFullDescription.invalid ||
+        this.$.txtAdditionalInfo.invalid ||
+        this.$.txtPrice.invalid);
+      },
+
+      _enabledChanged: function(event) {
+        this._productEnabled = event.currentTarget.checked ? 'enabled' : 'disabled';
+      },
+
+      _onlineAvailabilityChanged: function(event) {
+        this._availableOnline = event.currentTarget.checked ? 'Available' : 'Unavailable';
+      }
 
     });
   </script>
