@@ -30,10 +30,9 @@ Element for product library product capturing on the Ordercloud platform
     <paper-input id="txtSku" label="SKU"></paper-input>
     <paper-input id="txtShortDescription" label="Short Description" required auto-validate error-message="Please provide a short description"></paper-input>
     <paper-textarea id="txtFullDescription" label="Full Description" required auto-validate error-message="Please provide a full description"></paper-textarea>
-    <paper-textarea id="txtAdditionalInfo" label="Additional Info"></paper-textarea>
     <paper-input id="txtPrice" label="Price" required auto-validate error-message="Please provide a price"></paper-input>
     <div class="toggleItem">
-      <iron-label>Product is [[ _productEnabled ]]</iron-label>
+      <iron-label>Options Plu Flat Mapping is [[ _productEnabled ]]</iron-label>
       <paper-toggle-button id="tglProductStatus" on-change="_enabledChanged"></paper-toggle-button>
     </div>
     <div class="toggleItem">
@@ -87,12 +86,8 @@ Element for product library product capturing on the Ordercloud platform
             description: this.$.txtFullDescription.value,
             price: this.$.txtPrice.value,
             sku: this.$.txtSku.value,
-            enabled: this.$.tglProductStatus.checked,
+            optionsPluFlatMappingEnabled: this.$.tglProductStatus.checked,
             availableOnline: this.$.tglSalesChannel.checked,
-            additionalInfo: this.$.txtAdditionalInfo.value,
-            attributes: [],
-            optionSets: [],
-            extraSets: [],
             tags: [],
             productType: null
           };
@@ -106,7 +101,6 @@ Element for product library product capturing on the Ordercloud platform
         this.$.txtSku.invalid ||
         this.$.txtShortDescription.invalid ||
         this.$.txtFullDescription.invalid ||
-        this.$.txtAdditionalInfo.invalid ||
         this.$.txtPrice.invalid);
       },
 
